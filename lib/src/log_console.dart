@@ -38,7 +38,7 @@ class RenderedEvent {
 }
 
 class _LogConsoleState extends State<LogConsole> {
-  OutputCallback _callback;
+  late OutputCallback _callback;
 
   ListQueue<RenderedEvent> _renderedBuffer = ListQueue();
   List<RenderedEvent> _filteredBuffer = [];
@@ -70,8 +70,7 @@ class _LogConsoleState extends State<LogConsole> {
 
     _scrollController.addListener(() {
       if (!_scrollListenerEnabled) return;
-      var scrolledToBottom = _scrollController.offset >=
-          _scrollController.position.maxScrollExtent;
+      var scrolledToBottom = _scrollController.offset >= _scrollController.position.maxScrollExtent;
       setState(() {
         _followBottom = scrolledToBottom;
       });
@@ -116,12 +115,16 @@ class _LogConsoleState extends State<LogConsole> {
       debugShowCheckedModeBanner: false,
       theme: widget.dark
           ? ThemeData(
-              brightness: Brightness.dark,
-              accentColor: Colors.blueGrey,
+              colorScheme: ColorScheme.fromSwatch().copyWith(
+                brightness: Brightness.dark,
+                secondary: Colors.blueGrey,
+              ),
             )
           : ThemeData(
-              brightness: Brightness.light,
-              accentColor: Colors.lightBlueAccent,
+              colorScheme: ColorScheme.fromSwatch().copyWith(
+                brightness: Brightness.light,
+                secondary: Colors.lightBlueAccent,
+              ),
             ),
       home: Scaffold(
         body: SafeArea(
@@ -269,9 +272,11 @@ class _LogConsoleState extends State<LogConsole> {
                 value: Level.wtf,
               )
             ],
-            onChanged: (value) {
-              _filterLevel = value;
-              _refreshFilter();
+            onChanged: (Level? value) {
+              if (value != null) {
+                _filterLevel = value;
+                _refreshFilter();
+              }
             },
           )
         ],
@@ -319,7 +324,7 @@ class LogBar extends StatelessWidget {
   final bool dark;
   final Widget child;
 
-  LogBar({this.dark, this.child});
+  LogBar({required this.dark, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -330,7 +335,7 @@ class LogBar extends StatelessWidget {
           boxShadow: [
             if (!dark)
               BoxShadow(
-                color: Colors.grey[400],
+                color: Colors.grey.shade400,
                 blurRadius: 3,
               ),
           ],

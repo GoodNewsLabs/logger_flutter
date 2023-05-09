@@ -3,12 +3,14 @@ description: Demonstrates how to use the logger_flutter plugin.
 publish_to: 'none'
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
+  lints: ^2.0.1
+  logger: ^1.3.0
   logger_flutter:
     path: ../
 
